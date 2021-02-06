@@ -6,10 +6,12 @@ defmodule AtriaTask1.Models.Users do
 
   alias Bcrypt
   alias AtriaTask1.Repo
-  @primary_key {:user_id, :integer, autogenerate: false}
+
+  @primary_key {:user_id, :id, autogenerate: true}
+  @derive {Phoenix.Param, key: :user_id}
 
   @type t :: %__MODULE__{}
-  schema "employees" do
+  schema "users" do
     field(:full_name, :string)
     field(:email, :string)
     field(:password, :string)
@@ -28,7 +30,6 @@ defmodule AtriaTask1.Models.Users do
       :age
     ])
     |> validate_required([
-      :user_id,
       :full_name,
       :email,
       :password,
@@ -46,4 +47,42 @@ defmodule AtriaTask1.Models.Users do
   end
 
   defp put_password_hash(changeset), do: changeset
+
+  @doc """
+
+  #### Input
+
+  ```elixir
+  user = %{
+      email: "mahesh@test.in",
+      full_name: "Mahesh Reddy",
+      password: "123456",
+      age: 26
+    }
+
+  AtriaTask1.Models.Users.create_user(user)
+  ```
+  #### Output
+
+  ```elixir
+  {:ok,
+   %AtriaTask1.Models.Users{
+     __meta__: #Ecto.Schema.Metadata<:loaded, "users">,
+     age: 26,
+     email: "mahesh@test.in",
+     full_name: "Mahesh Reddy",
+     inserted_at: ~N[2021-02-06 12:15:31],
+     password: "$2b$12$NEC0.BfL6NhKDGUrCh.l8O6WC1pkB3wDzIgfor6nHloW0a/S/0uGC",
+     updated_at: ~N[2021-02-06 12:15:31],
+     user_id: 1
+   }}
+
+  ```
+  """
+  @spec create_user(map) :: map
+  def create_user(attrs \\ %{}) do
+    %__MODULE__{}
+    |> changeset(attrs)
+    |> Repo.insert()
+  end
 end

@@ -3,7 +3,7 @@ defmodule AtriaTask1.Repo.Migrations.Create_Table_For_Users do
 
   def change do
     create table(:users, primary_key: false) do
-      add(:user_id, :integer, primary_key: true)
+      add(:user_id, :serial, primary_key: true)
       add(:full_name, :string)
       add(:email, :string)
       add(:password, :string)
@@ -14,5 +14,6 @@ defmodule AtriaTask1.Repo.Migrations.Create_Table_For_Users do
 
     create(index("users", [:user_id, :password]))
     create(index("users", [:user_id, :full_name, :email, :age]))
+    create unique_index(:users, [:email])
   end
 end
