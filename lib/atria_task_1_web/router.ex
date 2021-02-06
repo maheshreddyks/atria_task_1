@@ -25,7 +25,7 @@ defmodule AtriaTask1Web.Router do
     post("/signup", UserController, :signup)
     post("/login", UserController, :login)
 
-    resources("/topics_of_interest", TopicsController)
+    get("/list_topics", TopicController, :all_topics)
   end
 
   # Other scopes may use custom stacks.

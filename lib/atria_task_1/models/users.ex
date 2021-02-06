@@ -43,9 +43,10 @@ defmodule AtriaTask1.Models.Users do
   defp put_password_hash(
          %Ecto.Changeset{valid?: true, changes: %{password: password}} = changeset
        ) do
-    change(changeset, password: Bcrypt.hash_pwd_salt(password))
+    change(changeset, password: hash_pwd(password))
   end
 
+  defp hash_pwd(password), do: Bcrypt.hash_pwd_salt(password)
   defp put_password_hash(changeset), do: changeset
 
   @doc """
@@ -84,5 +85,18 @@ defmodule AtriaTask1.Models.Users do
     %__MODULE__{}
     |> changeset(attrs)
     |> Repo.insert()
+  end
+
+  @spec find_by_username_and_password(string(), string()) :: map
+  def find_by_username_and_password(email, password) do
+    data = Repo.get_by(AtriaTask1.Models.Users, email: email)
+
+    cond do
+      is_map(data) ->
+        {Bcrypt.verify_pass(password, data.password), data}
+
+      true ->
+        false
+    end
   end
 end
