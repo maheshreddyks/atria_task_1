@@ -3,14 +3,15 @@ defmodule AtriaTask1Web.TopicController do
   alias AtriaTask1.Models.{TopicOfInterest, UserTopicLink}
   alias AtriaTask1.Utils
   # alias AtriaTask1Web.ChangesetView
-  plug(AtriaTask1.Plug.Authenticate, [:get_all_topics])
+  plug(AtriaTask1.Plug.Authenticate, [:get_all_topics, :add_topics_to_user, :get_user_topics])
 
   def get_all_topics(conn, _params) do
     all_topics = TopicOfInterest.get_all_topics()
-    json(conn, all_topics)
+    response = %{count: length(all_topics), topics: all_topics}
+    json(conn, response)
   end
 
-  def add_topics(conn, params) do
+  def add_topics_to_user(conn, params) do
     current_user = conn.assigns[:current_user]
 
     if Map.has_key?(params, "topic_ids") && params["topic_ids"] != [] do
@@ -57,6 +58,8 @@ defmodule AtriaTask1Web.TopicController do
       |> UserTopicLink.get_topics_for_user_id(:preload)
       |> Utils.get_topics_from_meta_deta()
 
-    json(conn, data)
+    response = %{count: length(data), topics: data}
+
+    json(conn, response)
   end
 end
