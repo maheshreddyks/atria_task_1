@@ -59,19 +59,10 @@ defmodule AtriaTask1.Models.TopicOfInterest do
     |> Repo.insert()
   end
 
-  def get_all_topics(type \\ :default) do
-    case type do
-      :ids ->
-        from(toi in AtriaTask1.Models.TopicOfInterest,
-          select: toi.id
-        )
-        |> Repo.all()
-
-      _ ->
-        from(toi in AtriaTask1.Models.TopicOfInterest,
-          select: %{topic_name: toi.topic_name, short_desc: toi.short_desc, id: toi.id}
-        )
-        |> Repo.all()
-    end
+  def get_all_topics() do
+    from(toi in AtriaTask1.Models.TopicOfInterest,
+      select: %{topic_name: toi.topic_name, short_desc: toi.short_desc, id: toi.id}
+    )
+    |> Repo.all()
   end
 end

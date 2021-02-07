@@ -15,7 +15,7 @@ defmodule AtriaTask1Web.TopicController do
     current_user = conn.assigns[:current_user]
 
     if Map.has_key?(params, "topic_names") && params["topic_names"] != [] do
-      all_topics = TopicOfInterest.get_all_topics(:topic_name)
+      all_topics = TopicOfInterest.get_all_topics()
 
       all_topics_names = all_topics |> Enum.map(fn topic -> topic.topic_name end)
 
