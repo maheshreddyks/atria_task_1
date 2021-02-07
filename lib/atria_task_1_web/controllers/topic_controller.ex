@@ -2,15 +2,20 @@ defmodule AtriaTask1Web.TopicController do
   use AtriaTask1Web, :controller
   alias AtriaTask1.Models.{TopicOfInterest, UserTopicLink}
   alias AtriaTask1.Utils
-  # alias AtriaTask1Web.ChangesetView
   plug(AtriaTask1.Plug.Authenticate, [:get_all_topics, :add_topics_to_user, :get_user_topics])
 
+  @doc """
+    Get All topics for users to select
+  """
   def get_all_topics(conn, _params) do
     all_topics = TopicOfInterest.get_all_topics()
     response = %{status: true, count: length(all_topics), topics: all_topics}
     json(conn, response)
   end
 
+  @doc """
+    Add topics to user based on topic names
+  """
   def add_topics_to_user(conn, params) do
     current_user = conn.assigns[:current_user]
 
@@ -57,6 +62,9 @@ defmodule AtriaTask1Web.TopicController do
     end
   end
 
+  @doc """
+    Get topics which are interested/allocated to user
+  """
   def get_user_topics(conn, _params) do
     current_user = conn.assigns[:current_user]
 

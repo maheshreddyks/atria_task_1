@@ -3,6 +3,9 @@ defmodule AtriaTask1Web.UserController do
   alias AtriaTask1.Models.Users
   alias AtriaTask1Web.ChangesetView
 
+  @doc """
+    User can signup
+  """
   def signup(conn, params) do
     case Users.create_user(params) do
       {:ok, changeset} ->

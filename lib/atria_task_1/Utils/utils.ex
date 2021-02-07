@@ -1,4 +1,7 @@
 defmodule AtriaTask1.Utils do
+  @doc """
+    List outs topics from the meta data as Jason Parser cant pass the original data as json.
+  """
   def get_topics_from_meta_deta(list_of_topics) do
     Enum.reduce(list_of_topics, [], fn topic, acc ->
       data = %{topic_name: topic.topic.topic_name, short_desc: topic.topic.short_desc}
@@ -7,6 +10,9 @@ defmodule AtriaTask1.Utils do
     end)
   end
 
+  @doc """
+    PrePopulate Data for Topics
+  """
   def add_topics_pre_populated() do
     sample_data =
       File.read!("priv/pre_populated_data/topic_sample.json")
