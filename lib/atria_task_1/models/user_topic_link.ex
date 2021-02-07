@@ -107,12 +107,14 @@ defmodule AtriaTask1.Models.UserTopicLink do
         )
         |> Repo.all()
 
-      :ids ->
+      :topic_names ->
         from(toi in AtriaTask1.Models.UserTopicLink,
           where: toi.user_id == ^user_id,
-          select: toi.topic_id
+          # select: toi.topic_id,
+          preload: [:topic]
         )
         |> Repo.all()
+        |> Enum.map(fn topic -> topic.topic.topic_name end)
     end
   end
 end
